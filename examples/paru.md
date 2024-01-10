@@ -1,0 +1,5 @@
+#### update
+
+```bash
+paru -Syu
+```
