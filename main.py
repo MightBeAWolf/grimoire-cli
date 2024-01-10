@@ -1,6 +1,7 @@
 import re
 import shlex
 import click
+import sys
 from rich.console import Console
 from rich.syntax import Syntax
 import subprocess
@@ -20,7 +21,7 @@ class CodeBlock:
         return f"#### {self.title}\n\n{formatted_args or ''}```{self.language}\n{self.block}\n```"
 
 def parse_markdown(md_content):
-    pattern = r"#### (?P<title>.+)\n(\nArguments:\n(?P<args>(- (.+)\n)*))?\n*```(?P<language>[^\n]+)\n(?P<block>.*)\n```"
+    pattern = r"#### (?P<title>.+)\n(\nArguments:\n(?P<args>(- (.+)\n)*))?\n*```(?P<language>[^\n]+)\n(?P<block>(.*\n)*?)```"
 
     code_blocks = []
     for match in re.finditer(pattern, md_content):
@@ -78,6 +79,8 @@ def exec(md_content, title, args, verbose=False, debug=False):
                     print(command)
                 process = subprocess.Popen(command, shell=True, executable='/bin/bash')
                 process.communicate()
+                process.wait()
+                sys.exit(process.returncode)
             else:
                 click.echo(f"Execution for language {block.language} not supported.")
             break
