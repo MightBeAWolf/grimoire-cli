@@ -30,6 +30,17 @@ class TestLeaf(unittest.TestCase):
         self.assertTrue(left_node.is_leaf())
         self.assertTrue(right_node.is_leaf())
 
+class TestConcat(unittest.TestCase):
+
+    def test_case1(self):
+        left_node = Node(data='This is ')
+        right_node = Node(data='a test')
+        result = left_node.concat(right_node)
+        self.assertFalse(result.is_leaf())
+        self.assertIs(result.left, left_node)
+        self.assertIs(result.right, right_node)
+        self.assertEqual(len(result), len(left_node))
+
 class TestNodeLength(unittest.TestCase):
     def test_leaf_length(self):
         input_str = 'This is a test'

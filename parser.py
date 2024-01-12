@@ -1,4 +1,5 @@
 
+from typing import Self
 
 
 class Node:
@@ -23,5 +24,10 @@ class Node:
     def is_leaf(self):
         return self.left is None and self.right is None
 
-    def concat(self, other):
-        new_root = Node(data=len(self))
+    def concat(self, other: Self) -> Self:
+        new_root = Node(data=len(self), left=self, right=other)
+        new_root.balance()
+        return new_root
+
+    def balance(self):
+        pass
